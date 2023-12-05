@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
 import "./globals.css";
-import { Login, SessionProvider, SideBar } from "@/components";
+import { ClientProvider, Login, SessionProvider, SideBar } from "@/components";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export const metadata: Metadata = {
@@ -29,6 +29,7 @@ export default async function RootLayout({
                 <SideBar />
               </div>
               {/* Client provider -notigfication */}
+              <ClientProvider />
               <div className="bg-[#343541] flex-1"> {children}</div>
             </div>
           )}

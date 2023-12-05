@@ -1,3 +1,5 @@
+"use client";
+
 import { ChatGptLogo } from "@/assets/images";
 import { signIn } from "next-auth/react";
 import Image from "next/image";

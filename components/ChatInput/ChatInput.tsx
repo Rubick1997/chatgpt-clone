@@ -6,6 +6,7 @@ import axios from "axios";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 function ChatInput({ chatId }: Props) {
   const [prompt, setPrompt] = useState<string>("");
@@ -13,7 +14,7 @@ function ChatInput({ chatId }: Props) {
 
   //use swr to get model
 
-  const model = "text-davinci-003";
+  const model = "gpt-3.5-turbo-0613";
 
   const sendMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,6 +27,7 @@ function ChatInput({ chatId }: Props) {
       text: input,
       createdAt: serverTimestamp(),
       user: {
+        role: "user",
         _id: session?.user?.email!,
         name: session?.user?.name!,
         avatar:
@@ -45,17 +47,20 @@ function ChatInput({ chatId }: Props) {
       ),
       message
     );
-    //Toast notification
+    //Toast notification to say loading
+    const notification = toast.loading("One moment, thinking ...");
 
     await axios
       .post(
         "/api/askQuestion",
-        JSON.stringify({ prompt: input, chatId, model, session }),
+        { prompt: input, chatId, model, session },
         { headers: { "Content-Type": "application/json" } }
       )
       .then(() => {
         // toast notification to say successful
-      });
+        toast.success("Here is your answer!", { id: notification });
+      })
+      .catch((error) => toast.error(error.message, { id: notification }));
   };
 
   return (

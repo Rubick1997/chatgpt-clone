@@ -1,3 +1,5 @@
+"use client";
+
 import { db } from "@/firebase";
 import { ChatBubbleLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { collection, deleteDoc, doc, orderBy, query } from "firebase/firestore";
@@ -10,9 +12,11 @@ function ChatRow({ id }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
-
   const [messages] = useCollection(
-    collection(db, "users", session?.user?.email!, "chats", id, "messages")
+    query(
+      collection(db, "users", session?.user?.email!, "chats", id, "messages"),
+      orderBy("createdAt", "asc")
+    )
   );
 
   const removeChat = async () => {
