@@ -8,7 +8,7 @@ const fetchModels = () => axios.get("/api/getEngines").then((res) => res);
 function ModelSelection() {
   const { data: models, isLoading } = useSWR("models", fetchModels);
   const { data: model, mutate: setModel } = useSWR("model", {
-    fallbackData: "text-davinci-003",
+    fallbackData: "gpt-4-vision-preview",
   });
 
   return (

@@ -1,6 +1,5 @@
 import openai from "./chatgpt";
 
-
 const query = async (prompt: string, chatId: string, model: string) => {
   // todo: get all messages from chatId and append to prompt to build context
 

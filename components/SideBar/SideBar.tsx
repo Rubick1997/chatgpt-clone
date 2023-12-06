@@ -9,7 +9,7 @@ import { ModelSelection } from "..";
 
 function SideBar() {
   const { data: session } = useSession();
-  const [chats] = useCollection(
+  const [chats, loading] = useCollection(
     session &&
       query(
         collection(db, "users", session?.user?.email!, "chats"),
@@ -25,9 +25,12 @@ function SideBar() {
           <div className="hidden sm:inline">
             <ModelSelection />
           </div>
-          {chats?.docs.map((chat) => {
-            return <ChatRow key={chat.id} id={chat.id} />;
-          })}
+          <div className="flex flex-col space-y-2 m-y-2">
+            {loading && <div className="animate-pulse text-center text-white">Loading Chats...</div>}
+            {chats?.docs.map((chat) => {
+              return <ChatRow key={chat.id} id={chat.id} />;
+            })}
+          </div>
         </div>
       </div>
       {session ? (
